@@ -1,0 +1,15 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Veloz API",
+    "description": "API documentation for Veloz",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3001",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {}
+}

@@ -1,0 +1,24 @@
+export const PERMISSIONS = [
+    "CREATE_PRODUCT",
+    "DELETE_PRODUCT",
+    "UPDATE_PRODUCT",
+    "VIEW_PRODUCT",
+    "CREATE_CATEGORY",
+    "DELETE_CATEGORY",
+    "UPDATE_CATEGORY",
+    "VIEW_CATEGORY",
+    "CREATE_CUSTOMER",
+    "DELETE_CUSTOMER",
+    "UPDATE_CUSTOMER",
+    "VIEW_CUSTOMER",
+    "CREATE_ORDER",
+    "DELETE_ORDER",
+    "UPDATE_ORDER",
+    "VIEW_ORDER",
+    "CREATE_REVIEW",
+    "DELETE_REVIEW",
+    "UPDATE_REVIEW",
+    "VIEW_REVIEW",
+] as const;
+
+export type Permission = typeof PERMISSIONS[number];
