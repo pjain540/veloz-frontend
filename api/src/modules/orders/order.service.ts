@@ -3,6 +3,8 @@ import { Request } from "express";
 import { createOrder, deleteOrderById, findOrderById, findOrderByIdandUpdate, getLastOrder, getOrders, getTrashedOrders, restoreOrder } from "../../shared/repositories/order.repository";
 import mongoose from "mongoose";
 import { generateNextOrderNo } from "../../helpers/orderHelper";
+import { findById } from "../../shared/repositories/product.repository";
+import { stripe } from "../../config/stripe";
 
 
 export const createOrderService = async (req: Request) => {
@@ -31,8 +33,30 @@ export const createOrderService = async (req: Request) => {
     const lastOrderNo = lastOrder ? lastOrder.orderNo : null;
     body.orderNo = generateNextOrderNo(lastOrderNo);
 
-    return await createOrder(body);
-}
+    const order = await createOrder(body);
+
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+            {
+                price_data: {
+                    currency: "INR",
+                    product_data: {
+                        name: `Order ${order.orderNo}`
+                    },
+                    unit_amount: order.amount * 100
+                },
+                quantity: 1
+            }
+        ],
+        mode: "payment",
+        success_url: process.env.STRIPE_SUCCESS_URL,
+        cancel_url: process.env.STRIPE_CANCEL_URL,
+    });
+    order.stripeSessionId = session.id;
+    await order.save();
+    return { order, session };
+};
 
 export const getOrdersService = async () => {
     return await getOrders();

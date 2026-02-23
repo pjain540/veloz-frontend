@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createCustomer, createOrder, getFreeShippingAbove } from '@/api';
 import toast from 'react-hot-toast';
 import { useCart } from '@/providers/CartProvider';
+import { loadStripe } from '@stripe/stripe-js';
 
 const CheckoutDrawer = () => {
     const { cartItems, cartTotal, clearCart } = useCart();
@@ -26,6 +27,7 @@ const CheckoutDrawer = () => {
 
     const [price, setPrice] = useState(0)
     const [shippingPrice, setShippingPrice] = useState(0)
+    const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
     useEffect(() => {
         const fetchPrice = async () => {
@@ -162,10 +164,14 @@ const CheckoutDrawer = () => {
             };
 
             const orderResponse = await createOrder(orderData);
-
+            console.log("orderResponse===========", orderResponse);
             if (orderResponse.success) {
-                toast.success("Order placed successfully!");
-                clearCart();
+                toast.success("Redirecting to payment... 💳");
+                const checkoutUrl = orderResponse.data.session.url;
+                if (checkoutUrl) {
+                    window.location.href = checkoutUrl;
+                }
+                // clearCart();
 
                 // Close the drawer
                 const closeBtn = document.querySelector('#checkoutOffcanvas .cart-close-btn') as HTMLElement;

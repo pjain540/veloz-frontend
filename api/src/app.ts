@@ -5,6 +5,7 @@ import { swaggerSpec } from "./config/swagger"
 import swaggerUi from "swagger-ui-express"
 import { routeConstants } from "./config/route.constants"
 import router from "./routes"
+import webhookRouter from "./webhook.routes"
 
 const app = express()
 
@@ -14,6 +15,9 @@ app.use(cors(
         credentials: true
     }
 ))
+
+// Mount webhook routes BEFORE express.json() for raw body access
+app.use("/api", webhookRouter)
 
 app.use(express.json())
 

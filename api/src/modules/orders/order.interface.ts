@@ -17,4 +17,5 @@ export interface IOrder extends Document {
         houseNo: string;
         street: string;
     }
+    stripeSessionId?: string;
 }

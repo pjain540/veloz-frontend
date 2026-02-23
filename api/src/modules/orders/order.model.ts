@@ -37,6 +37,9 @@ const orderSchema = new Schema<IOrder>({
     transactionId: {
         type: String,
     },
+    stripeSessionId: {
+        type: String,
+    },
     deletedAt: {
         type: Date,
         default: null
