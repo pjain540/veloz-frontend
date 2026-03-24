@@ -208,6 +208,20 @@ export const getFreeShippingAbove = async () => {
     }
 };
 
+export const getOrderById = async (id: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/order/get-by-id/${id}`);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Failed to fetch order by id:", error);
+        throw error;
+    }
+};
+
 
 
 

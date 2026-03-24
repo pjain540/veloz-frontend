@@ -164,7 +164,6 @@ const CheckoutDrawer = () => {
             };
 
             const orderResponse = await createOrder(orderData);
-            console.log("orderResponse===========", orderResponse);
             if (orderResponse.success) {
                 toast.success("Redirecting to payment... 💳");
                 const checkoutUrl = orderResponse.data.session.url;

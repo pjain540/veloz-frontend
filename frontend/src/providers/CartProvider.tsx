@@ -72,6 +72,7 @@ export const CartProvider = ({
 
     const clearCart = () => {
         setCartItems([])
+        localStorage.removeItem('Veloz_cart')
     }
 
     const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0)
