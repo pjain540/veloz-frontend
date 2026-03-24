@@ -1,7 +1,7 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   CAvatar,
-  CBadge,
   CDropdown,
   CDropdownDivider,
   CDropdownHeader,
@@ -9,32 +9,35 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import {
-  cilBell,
-  cilCreditCard,
-  cilCommentSquare,
-  cilEnvelopeOpen,
-  cilFile,
-  cilLockLocked,
-  cilSettings,
-  cilTask,
-  cilUser,
-} from '@coreui/icons'
+import { cilAccountLogout, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import { useAuth } from '../../context/AuthContext'
 
 const AppHeaderDropdown = () => {
+  const { logout, user } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/login')
+  }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
-        <CDropdownItem href="#">
-          <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">
+          <CIcon icon={cilUser} className="me-2" />
+          {user?.email || 'Admin'}
+        </CDropdownHeader>
+        <CDropdownDivider />
+        <CDropdownItem onClick={handleLogout} style={{ cursor: 'pointer' }}>
+          <CIcon icon={cilAccountLogout} className="me-2" />
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

@@ -1,5 +1,10 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+// Wrapper around fetch that always sends cookies (for auth)
+const apiFetch = (url, options = {}) => {
+  return fetch(url, { ...options, credentials: 'include' })
+}
+
 export const createProduct = async (productData) => {
     const formData = new FormData()
 
@@ -17,7 +22,7 @@ export const createProduct = async (productData) => {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/product/create`, {
+        const response = await apiFetch(`${API_BASE_URL}/product/create`, {
             method: 'POST',
             body: formData,
         })
@@ -38,7 +43,7 @@ export const createProduct = async (productData) => {
 
 export const getAllCategory = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/category/get-all`)
+        const response = await apiFetch(`${API_BASE_URL}/category/get-all`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get all category')
@@ -52,7 +57,7 @@ export const getAllCategory = async () => {
 
 export const getProductById = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/product/get-by-id/${id}`)
+        const response = await apiFetch(`${API_BASE_URL}/product/get-by-id/${id}`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get product')
@@ -92,7 +97,7 @@ export const updateProduct = async (id, productData) => {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/product/update/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/product/update/${id}`, {
             method: 'PUT',
             body: formData,
         })
@@ -106,7 +111,7 @@ export const updateProduct = async (id, productData) => {
 
 export const getAllProducts = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/product/get-all`)
+        const response = await apiFetch(`${API_BASE_URL}/product/get-all`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get products')
@@ -120,7 +125,7 @@ export const getAllProducts = async () => {
 
 export const trashProduct = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/product/trash/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/product/trash/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -133,7 +138,7 @@ export const trashProduct = async (id) => {
 
 export const showTrashProduct = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/product/list?isTrashed=true`)
+        const response = await apiFetch(`${API_BASE_URL}/product/list?isTrashed=true`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get trash products')
@@ -147,7 +152,7 @@ export const showTrashProduct = async () => {
 
 export const restoreProduct = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/product/restore/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/product/restore/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -160,7 +165,7 @@ export const restoreProduct = async (id) => {
 
 export const deleteProduct = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/product/delete/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/product/delete/${id}`, {
             method: 'DELETE',
         })
         const data = await response.json()
@@ -173,7 +178,7 @@ export const deleteProduct = async (id) => {
 
 export const createCategory = async (formData) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/category/create`, {
+        const response = await apiFetch(`${API_BASE_URL}/category/create`, {
             method: 'POST',
             body: formData,
         })
@@ -190,7 +195,7 @@ export const createCategory = async (formData) => {
 
 export const getCategoryById = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/category/get-by-id/${id}`)
+        const response = await apiFetch(`${API_BASE_URL}/category/get-by-id/${id}`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get category')
@@ -204,7 +209,7 @@ export const getCategoryById = async (id) => {
 
 export const deleteCategoryById = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/category/delete/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/category/delete/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -220,7 +225,7 @@ export const deleteCategoryById = async (id) => {
 
 export const updateCategoryById = async (id, formData) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/category/update/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/category/update/${id}`, {
             method: 'PUT',
             body: formData,
         })
@@ -237,7 +242,7 @@ export const updateCategoryById = async (id, formData) => {
 
 export const getAllOrders = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/order/get-all`)
+        const response = await apiFetch(`${API_BASE_URL}/order/get-all`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get orders')
@@ -251,7 +256,7 @@ export const getAllOrders = async () => {
 
 export const getOrderById = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/order/get-by-id/${id}`)
+        const response = await apiFetch(`${API_BASE_URL}/order/get-by-id/${id}`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get order')
@@ -265,7 +270,7 @@ export const getOrderById = async (id) => {
 
 export const softDeleteOrder = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/order/trash/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/order/trash/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -281,7 +286,7 @@ export const softDeleteOrder = async (id) => {
 
 export const getTrashedOrder = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/order/trashed`)
+        const response = await apiFetch(`${API_BASE_URL}/order/trashed`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get trashed orders')
@@ -295,7 +300,7 @@ export const getTrashedOrder = async () => {
 
 export const restoreOrder = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/order/restore/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/order/restore/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -311,7 +316,7 @@ export const restoreOrder = async (id) => {
 
 export const deleteOrder = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/order/delete/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/order/delete/${id}`, {
             method: 'DELETE',
         })
         const data = await response.json()
@@ -327,7 +332,7 @@ export const deleteOrder = async (id) => {
 
 export const getAllContacts = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/contact/get-all`)
+        const response = await apiFetch(`${API_BASE_URL}/contact/get-all`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get contacts')
@@ -341,7 +346,7 @@ export const getAllContacts = async () => {
 
 export const softDeletecontact = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/contact/trash/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/contact/trash/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -357,7 +362,7 @@ export const softDeletecontact = async (id) => {
 
 export const getTrashedcontact = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/contact/trashed`)
+        const response = await apiFetch(`${API_BASE_URL}/contact/trashed`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get trashed contacts')
@@ -371,7 +376,7 @@ export const getTrashedcontact = async () => {
 
 export const restoreContact = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/contact/restore/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/contact/restore/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -387,7 +392,7 @@ export const restoreContact = async (id) => {
 
 export const deletecontact = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/contact/delete/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/contact/delete/${id}`, {
             method: 'DELETE',
         })
         const data = await response.json()
@@ -403,7 +408,7 @@ export const deletecontact = async (id) => {
 
 export const getAllCustomers = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/customer/get-all`)
+        const response = await apiFetch(`${API_BASE_URL}/customer/get-all`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get customers')
@@ -417,7 +422,7 @@ export const getAllCustomers = async () => {
 
 export const softDeleteCustomer = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/customer/trash/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/customer/trash/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -433,7 +438,7 @@ export const softDeleteCustomer = async (id) => {
 
 export const getTrashedCustomer = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/customer/trashed`)
+        const response = await apiFetch(`${API_BASE_URL}/customer/trashed`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get trashed customers')
@@ -447,7 +452,7 @@ export const getTrashedCustomer = async () => {
 
 export const restoreCustomer = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/customer/restore/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/customer/restore/${id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -463,7 +468,7 @@ export const restoreCustomer = async (id) => {
 
 export const deleteCustomer = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/customer/delete/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/customer/delete/${id}`, {
             method: 'DELETE',
         })
         const data = await response.json()
@@ -479,7 +484,7 @@ export const deleteCustomer = async (id) => {
 
 export const getCustomerById = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/customer/get-by-id/${id}`)
+        const response = await apiFetch(`${API_BASE_URL}/customer/get-by-id/${id}`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get customer')
@@ -493,7 +498,7 @@ export const getCustomerById = async (id) => {
 
 export const getReviewsByProductId = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/review/get-by-product-id/${id}`)
+        const response = await apiFetch(`${API_BASE_URL}/review/get-by-product-id/${id}`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get reviews')
@@ -507,7 +512,7 @@ export const getReviewsByProductId = async (id) => {
 
 export const createSetting = async (payload) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/setting/create`, {
+        const response = await apiFetch(`${API_BASE_URL}/setting/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -527,7 +532,7 @@ export const createSetting = async (payload) => {
 
 export const updateSetting = async (id, payload) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/setting/update/${id}`, {
+        const response = await apiFetch(`${API_BASE_URL}/setting/update/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -547,7 +552,7 @@ export const updateSetting = async (id, payload) => {
 
 export const getSettingBySlug = async (slug) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/setting/get-slug/${slug}`)
+        const response = await apiFetch(`${API_BASE_URL}/setting/get-slug/${slug}`)
         const resData = await response.json()
         if (resData.success !== true) {
             throw new Error(resData.message || 'Failed to get setting')
@@ -561,7 +566,7 @@ export const getSettingBySlug = async (slug) => {
 
 export const getAllSetting = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/setting/get-all`)
+        const response = await apiFetch(`${API_BASE_URL}/setting/get-all`)
         const data = await response.json()
         if (data.success !== true) {
             throw new Error(data.message || 'Failed to get all settings')
@@ -569,6 +574,34 @@ export const getAllSetting = async () => {
         return data
     } catch (error) {
         console.error('Error in getAllSetting:', error)
+        throw error
+    }
+}
+
+export const getDashboardCounts = async () => {
+    try {
+        const response = await apiFetch(`${API_BASE_URL}/dashboard/counts`)
+        const data = await response.json()
+        if (data.success !== true) {
+            throw new Error(data.message || 'Failed to get dashboard counts')
+        }
+        return data
+    } catch (error) {
+        console.error('Error in getDashboardCounts:', error)
+        throw error
+    }
+}
+
+export const getRecentOrders = async () => {
+    try {
+        const response = await apiFetch(`${API_BASE_URL}/dashboard/recent-orders`)
+        const data = await response.json()
+        if (data.success !== true) {
+            throw new Error(data.message || 'Failed to get recent orders')
+        }
+        return data
+    } catch (error) {
+        console.error('Error in getRecentOrders:', error)
         throw error
     }
 }
