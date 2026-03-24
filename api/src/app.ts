@@ -10,12 +10,15 @@ import webhookRouter from "./webhook.routes"
 
 const app = express()
 
-app.use(cors(
-    {
-        origin: ["*", "http://localhost:3000", "http://localhost:3002"],
-        credentials: true
-    }
-))
+app.use(cors({
+    origin: [
+        "http://localhost:3000",
+        "http://localhost:3002",
+        "https://62f7jbbq-3002.inc1.devtunnels.ms",
+        "https://62f7jbbq-3000.inc1.devtunnels.ms"
+    ],
+    credentials: true
+}));
 
 // Mount webhook routes BEFORE express.json() for raw body access
 app.use("/api", webhookRouter)
