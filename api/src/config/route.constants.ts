@@ -2,6 +2,9 @@ export const routeConstants = {
     API_BASE: {
         DEFAULT: '/api'
     },
+    AUTH: {
+        BASE: '/auth',
+    },
     CATEGORY: {
         BASE: '/category',
         CREATE: '/create',
@@ -54,6 +57,7 @@ export const routeConstants = {
         MULTI_TRASH: '/multi-trash',
         MULTI_DELETE: '/multi-delete',
         RESTORE: '/restore/:id',
+        GET_BY_ID_QUERY_PARAMS: '/get-by-id-query-params',
         FRONTEND: {
             CREATE: '/create',
         }
@@ -100,5 +104,10 @@ export const routeConstants = {
         BASE: '/file',
         CREATE: '/create',
         CREATE_MULTIPLE: '/create-multiple'
+    },
+    DASHBOARD: {
+        BASE: '/dashboard',
+        GET_COUNTS: '/counts',
+        GET_RECENT_ORDERS: '/recent-orders'
     }
 }

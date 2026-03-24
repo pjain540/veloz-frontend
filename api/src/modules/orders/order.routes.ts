@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createOrderController } from "./order.frontendController";
 import { routeConstants } from "../../config/route.constants";
-import { deleteOrderByID, getOrderById, getOrders, getTrashedOrders, restoreOrder, softDeleteById } from "./order.controller";
+import { deleteOrderByID, getOrderById, getOrderByIdQueryParams, getOrders, getTrashedOrders, restoreOrder, softDeleteById } from "./order.controller";
 
 const router = Router();
 
@@ -72,6 +72,8 @@ router.get(routeConstants.ORDER.TRASHED, getTrashedOrders)
 router.get(routeConstants.ORDER.RESTORE, restoreOrder)
 
 router.delete(routeConstants.ORDER.DELETE, deleteOrderByID)
+
+router.get(routeConstants.ORDER.GET_BY_ID_QUERY_PARAMS, getOrderByIdQueryParams)
 
 //frontend
 /**

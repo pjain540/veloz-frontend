@@ -1,7 +1,7 @@
 import { HTTP_STATUS } from "../../config/constants"
 import { stripe } from "../../config/stripe"
 import { sendResponse } from "../../shared/utils/responseHandler"
-import { deleteOrderByIdService, getOrderByIdService, getOrdersService, getTrashedOrdersService, restoreOrderService, softDeleteOrderService } from "./order.service"
+import { deleteOrderByIdService, getByOrderIdQueryParamsService, getOrderByIdService, getOrdersService, getTrashedOrdersService, restoreOrderService, softDeleteOrderService } from "./order.service"
 import { Request, Response } from "express"
 import Stripe from "stripe"
 import orderModel from "./order.model"
@@ -108,6 +108,25 @@ export const deleteOrderByID = async (req: Request, res: Response) => {
             statusCode: HTTP_STATUS.OK,
             success: true,
             message: "Order deleted successfully",
+            data: result
+        })
+    } catch (error: any) {
+        sendResponse(res, {
+            statusCode: HTTP_STATUS.BAD_REQUEST,
+            success: false,
+            message: error.message,
+            data: null
+        })
+    }
+}
+
+export const getOrderByIdQueryParams = async (req: Request, res: Response) => {
+    try {
+        const result = await getByOrderIdQueryParamsService(req)
+        sendResponse(res, {
+            statusCode: HTTP_STATUS.OK,
+            success: true,
+            message: "Order fetched successfully",
             data: result
         })
     } catch (error: any) {

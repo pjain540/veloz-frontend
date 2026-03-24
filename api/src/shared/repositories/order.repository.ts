@@ -52,3 +52,7 @@ export const deleteOrderById = async (orderId: string) => {
     return await OrderModel.findByIdAndDelete(orderId)
 }
 
+export const getByOrderIdQueryParams = async (orderId: string) => {
+    return await OrderModel.findOne({ _id: orderId })
+}
+

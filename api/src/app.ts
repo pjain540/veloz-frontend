@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import path from "path"
+import cookieParser from "cookie-parser"
 import { swaggerSpec } from "./config/swagger"
 import swaggerUi from "swagger-ui-express"
 import { routeConstants } from "./config/route.constants"
@@ -22,6 +23,8 @@ app.use("/api", webhookRouter)
 app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }))
+
+app.use(cookieParser())
 
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")))
 

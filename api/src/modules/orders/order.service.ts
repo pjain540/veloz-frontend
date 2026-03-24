@@ -1,6 +1,6 @@
 
 import { Request } from "express";
-import { createOrder, deleteOrderById, findOrderById, findOrderByIdandUpdate, getLastOrder, getOrders, getTrashedOrders, restoreOrder } from "../../shared/repositories/order.repository";
+import { createOrder, deleteOrderById, findOrderById, findOrderByIdandUpdate, getByOrderIdQueryParams, getLastOrder, getOrders, getTrashedOrders, restoreOrder } from "../../shared/repositories/order.repository";
 import mongoose from "mongoose";
 import { generateNextOrderNo } from "../../helpers/orderHelper";
 import { findById } from "../../shared/repositories/product.repository";
@@ -50,8 +50,11 @@ export const createOrderService = async (req: Request) => {
             }
         ],
         mode: "payment",
-        success_url: process.env.STRIPE_SUCCESS_URL,
-        cancel_url: process.env.STRIPE_CANCEL_URL,
+        success_url: `${process.env.STRIPE_SUCCESS_URL}${order._id.toString()}`,
+        cancel_url: `${process.env.STRIPE_CANCEL_URL}${order._id.toString()}`,
+        metadata: {
+            orderId: order._id.toString()
+        }
     });
     order.stripeSessionId = session.id;
     await order.save();
@@ -97,4 +100,13 @@ export const deleteOrderByIdService = async (req: Request) => {
     }
     return await deleteOrderById(orderId.id);
 }
+
+export const getByOrderIdQueryParamsService = async (req: Request) => {
+    const orderId = req.query as { id: string };
+    if (!mongoose.Types.ObjectId.isValid(orderId.id)) {
+        throw new Error("Invalid Order ID");
+    }
+    return await getByOrderIdQueryParams(orderId.id);
+}
+
 
